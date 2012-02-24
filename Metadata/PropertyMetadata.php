@@ -25,6 +25,7 @@ class PropertyMetadata extends BasePropertyMetadata
     const ACCESS_TYPE_PROPERTY        = 'property';
     const ACCESS_TYPE_PUBLIC_METHOD   = 'public_method';
 
+    public $groups;
     public $sinceVersion;
     public $untilVersion;
     public $serializedName;
@@ -83,6 +84,7 @@ class PropertyMetadata extends BasePropertyMetadata
             $this->getter,
             $this->setter,
             $this->inline,
+            $this->groups,
             parent::serialize(),
         ));
     }
@@ -103,6 +105,7 @@ class PropertyMetadata extends BasePropertyMetadata
             $this->getter,
             $this->setter,
             $this->inline,
+            $this->groups,
             $parentStr
         ) = unserialize($str);
 
