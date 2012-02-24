@@ -71,6 +71,10 @@ class YamlDriver extends AbstractFileDriver
                         $isExpose = (Boolean) $pConfig['expose'];
                     }
 
+                    if (isset($pConfig['groups'])) {
+                        $pMetadata->groups = $pConfig['groups'];
+                    }
+
                     if (isset($pConfig['since_version'])) {
                         $pMetadata->sinceVersion = (string) $pConfig['since_version'];
                     }
