@@ -31,6 +31,7 @@ class Serializer implements SerializerInterface
     private $serializationVisitors;
     private $deserializationVisitors;
     private $exclusionStrategy;
+    private $ignoreNull = True;
 
     public function __construct(MetadataFactoryInterface $factory, array $serializationVisitors = array(), array $deserializationVisitors = array())
     {   
@@ -55,6 +56,13 @@ class Serializer implements SerializerInterface
         $this->exclusionStrategy = new VersionExclusionStrategy($version);
     }
 
+
+    public function setIgnoreNull($ignoreNull)
+    {
+        $this->ignoreNull = $ignoreNull;
+    }
+
+
     public function setGroup($group) {
         if (null === $group) {
             $this->exclusionStrategy = null;
@@ -65,8 +73,10 @@ class Serializer implements SerializerInterface
         $this->exclusionStrategy = new GroupExclusionStrategy($group);
     }
 
+
     public function toArray($data) {
         $visitor = $this->getSerializationVisitor('json');
+        $visitor->setIgnoreNull($this->ignoreNull);
         $visitor->setNavigator($navigator = new GraphNavigator(GraphNavigator::DIRECTION_SERIALIZATION, $this->factory, $this->exclusionStrategy));
         $navigator->accept($visitor->prepare($data), null, $visitor);
 
@@ -77,6 +87,7 @@ class Serializer implements SerializerInterface
     public function serialize($data, $format)
     {
         $visitor = $this->getSerializationVisitor($format);
+        $visitor->setIgnoreNull($this->ignoreNull);
         $visitor->setNavigator($navigator = new GraphNavigator(GraphNavigator::DIRECTION_SERIALIZATION, $this->factory, $this->exclusionStrategy));
         $navigator->accept($visitor->prepare($data), null, $visitor);
 

@@ -24,11 +24,16 @@ abstract class AbstractVisitor implements VisitorInterface
 {
     protected $namingStrategy;
     protected $customHandlers;
+    protected $ignoreNull = True;
 
     public function __construct(PropertyNamingStrategyInterface $namingStrategy, array $customHandlers)
     {
         $this->namingStrategy = $namingStrategy;
         $this->customHandlers = $customHandlers;
+    }
+
+    public function setIgnoreNull($ignoreNull) {
+        $this->ignoreNull = $ignoreNull;
     }
 
     public function getNamingStrategy()
