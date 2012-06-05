@@ -38,6 +38,8 @@ class Serializer implements SerializerInterface
         $this->factory = $factory;
         $this->serializationVisitors = $serializationVisitors;
         $this->deserializationVisitors = $deserializationVisitors;
+        
+        $this->setGroups(null);
     }
 
     public function setExclusionStrategy(ExclusionStrategyInterface $exclusionStrategy = null)
@@ -63,14 +65,14 @@ class Serializer implements SerializerInterface
     }
 
 
-    public function setGroup($group) {
-        if (null === $group) {
-            $this->exclusionStrategy = null;
+    public function setGroups($groups) {
+        if (null === $groups) {
+            $this->exclusionStrategy = new GroupExclusionStrategy(null);
 
             return;
         }
 
-        $this->exclusionStrategy = new GroupExclusionStrategy($group);
+        $this->exclusionStrategy = new GroupExclusionStrategy($groups);
     }
 
 

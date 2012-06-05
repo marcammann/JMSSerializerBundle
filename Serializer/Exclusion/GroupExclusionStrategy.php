@@ -23,11 +23,11 @@ use JMS\SerializerBundle\Metadata\PropertyMetadata;
 
 class GroupExclusionStrategy implements ExclusionStrategyInterface
 {
-    private $group;
+    private $groups;
 
-    public function __construct($group)
-    {
-        $this->group = $group;
+    public function __construct($groups)
+    {   
+        $this->groups = $groups;
     }
 
     public function shouldSkipClass(ClassMetadata $metadata)
@@ -40,7 +40,13 @@ class GroupExclusionStrategy implements ExclusionStrategyInterface
      */
     public function shouldSkipProperty(PropertyMetadata $property)
     {
-		if (!is_array($property->groups) || in_array($this->group, $property->groups)) {
+        if (is_null($this->groups) && (is_null($property->groups) || (is_array($property->groups) && in_array('default', $property->groups)))) {
+            return False;
+        } else if (is_null($this->groups)) {
+            return True;
+        }
+
+		if (!is_array($property->groups) || array_intersect($this->groups, $property->groups)) {
 			return False;
 		}
 
